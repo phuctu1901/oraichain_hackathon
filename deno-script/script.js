@@ -5,7 +5,6 @@ const httpPost = async (data) => {
     // Build formData object.
 
     const params = JSON.parse(data);
-    console.log(params[params.length-1])
     let formData = new FormData();
     formData.append('image', params[params.length-1]);
     await fetch(url, {
