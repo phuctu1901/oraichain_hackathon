@@ -7,6 +7,13 @@ parameters
     pub expert_output_data: String,
 ```
 
-
+```json
+{
+    "user_id":"1234",
+    "input_data":"1234",
+    "ai_service_id":"1234",
+    "ai_output_data":"1234"
+}
+```
 Owner: `orai17jfg0q25wzqqr46cpuwvhksakgxhgmf0xsqjw5`
 Address `orai1et3j4s8xhe408sk0g9ryqlpsuev5csx337uwcy`
