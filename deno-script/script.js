@@ -8,16 +8,15 @@ const httpPost = async (fileName) => {
     const data = await fetch(url, {
         method: 'POST',
         body: formData
-    });
-    return data;
+    }).then(function(response) {
+        return response.text();
+      }).then(function(data) {
+        console.log(JSON.stringify(JSON.stringify(data))); // this will be a string
+      });
 }
 
 const main = async (data) => {
-    console.log(data)
-
-    let result = await httpPost(data)
-    console.log(result);
-    // console.log(JSON.stringify(responses))
+    await httpPost(data)
 };
 
 main(...process.argv.slice(2))
