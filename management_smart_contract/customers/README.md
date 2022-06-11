@@ -7,6 +7,8 @@ parameters
     pub expert_output_data: String,
 ```
 
+66.42.37.49:3000/addCustomerRequest
+
 ```json
 {
     "user_id":"1234",
