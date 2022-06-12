@@ -51,7 +51,7 @@ mod tests {
     // );
 
     let resp = format!(
-        "KET QUA LA"
+        "\"39734.png\""
     );
         let mut results: Vec<String> = Vec::new();
         results.push(resp);
