@@ -69,12 +69,12 @@ impl<'a, S: Storage> IndexList<S, TokenInfo> for TokenIndexes<'a, S> {
 }
 
 pub struct TransactionIndexes<'a, S: Storage> {
-    pub input_data: MultiIndex<'a, S, TransactionInfo>,
+    pub user_id: MultiIndex<'a, S, TransactionInfo>,
 }
 
 impl<'a, S: Storage> IndexList<S, TransactionInfo> for TransactionIndexes<'a, S> {
     fn get_indexes(&'_ self) -> Box<dyn Iterator<Item = &'_ dyn Index<S, TransactionInfo>> + '_> {
-        let v: Vec<&dyn Index<S, TransactionInfo>> = vec![&self.input_data];
+        let v: Vec<&dyn Index<S, TransactionInfo>> = vec![&self.user_id];
         Box::new(v.into_iter())
     }
 }
@@ -89,7 +89,8 @@ pub fn tokens<'a, S: Storage>() -> IndexedMap<'a, &'a str, TokenInfo, S, TokenIn
 
 pub fn transactions<'a, S: Storage>() -> IndexedMap<'a, &'a str, TransactionInfo, S, TransactionIndexes<'a, S>> {
     let indexes = TransactionIndexes {
-        input_data: MultiIndex::new(|d| d.input_data.as_bytes().to_vec(), b"transactions", b"transactions user_id"),
+        user_id: MultiIndex::new(|d| d.user_id.as_bytes().to_vec(), b"transactions", b"transactions user_id"),
     };
     IndexedMap::new(b"transactions", indexes)
 }
+
