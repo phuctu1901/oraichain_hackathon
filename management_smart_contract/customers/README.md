@@ -2,10 +2,12 @@
 
 parameters
 ```rust
-    pub expert_id: String,
+    pub user_id: String,
     pub input_data: String,
-    pub expert_output_data: String,
+    pub ai_service_id: String,
+    pub ai_output_data: String,
 ```
+
 
 66.42.37.49:3000/addCustomerRequest
 
@@ -19,3 +21,8 @@ parameters
 ```
 Owner: `orai17jfg0q25wzqqr46cpuwvhksakgxhgmf0xsqjw5`
 Address `orai1et3j4s8xhe408sk0g9ryqlpsuev5csx337uwcy`
+
+## Query
+- Query transaction with input_data
+- Query transactions of user_id
+

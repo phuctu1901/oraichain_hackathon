@@ -1,25 +1,21 @@
 use crate::msg::TransactionsResponse;
-use crate::package::AllNftInfoResponse;
-use crate::package::NftInfoResponse;
-use cosmwasm_std::{
-    attr, to_binary, Api, Binary, BlockInfo, Env, Extern, HandleResponse, HumanAddr, InitResponse,
-    MessageInfo, Order, Querier, StdError, StdResult, Storage, KV,
-};
-use cw721::Cw721ReceiveMsg;
 
-use cw0::maybe_canonical;
+
+use cosmwasm_std::{
+    attr, to_binary, Api, Binary, Env, Extern, HandleResponse, InitResponse,
+    MessageInfo, Order, Querier, StdError, StdResult, Storage,
+};
+
 use cw2::set_contract_version;
 use cw721::{
-    ApprovedForAllResponse, ContractInfoResponse, Expiration, NumTokensResponse, OwnerOfResponse,
-    TokensResponse,
+    ContractInfoResponse,
 };
 
 use crate::error::ContractError;
-use crate::msg::{HandleMsg, InitMsg, MintMsg, MinterResponse, QueryMsg, CustomerRequestMsg};
+use crate::msg::{HandleMsg, InitMsg, QueryMsg, CustomerRequestMsg};
 use crate::state::{
-    increment_tokens, num_tokens, tokens, Approval, TokenInfo, CONTRACT_INFO, MINTER, OPERATORS, TransactionInfo, transactions
+    CONTRACT_INFO, MINTER, TransactionInfo, transactions
 };
-use cw_storage_plus::Bound;
 
 // version info for migration info
 const CONTRACT_NAME: &str = "crates.io:oraiconet";
@@ -38,7 +34,7 @@ pub fn init<S: Storage, A: Api, Q: Querier>(
         symbol: msg.symbol,
     };
     CONTRACT_INFO.save(&mut deps.storage, &info)?;
-    let minter = deps.api.canonical_address(&msg.minter)?;
+    let minter = &msg.minter;
     MINTER.save(&mut deps.storage, &minter)?;
     Ok(InitResponse::default())
 }
@@ -156,12 +152,12 @@ pub fn handle_add_customer_request<S: Storage, A: Api, Q: Querier>(
     info: MessageInfo,
     msg: CustomerRequestMsg,
 ) -> Result<HandleResponse, ContractError> {
-    let minter = MINTER.load(&deps.storage)?;
-    let sender_raw = deps.api.canonical_address(&info.sender)?;
+    // let minter = MINTER.load(&deps.storage)?;
+    // let sender_raw = deps.api.canonical_address(&info.sender)?;
 
-    if sender_raw != minter {
-        return Err(ContractError::Unauthorized {});
-    }
+    // if sender_raw != minter {
+    //     return Err(ContractError::Unauthorized {});
+    // }
 
     let transaction = TransactionInfo {
         user_id: msg.user_id,
@@ -169,7 +165,7 @@ pub fn handle_add_customer_request<S: Storage, A: Api, Q: Querier>(
         input_data: msg.input_data,
         ai_output_data: msg.ai_output_data,
     };
-    let id = transaction.user_id.to_owned();
+    let id = transaction.input_data.to_owned();
     transactions().update(&mut deps.storage, &id, |old| match old {
         Some(_) => Err(ContractError::Claimed {}),
         None => Ok(transaction),

@@ -1,5 +1,5 @@
-use cosmwasm_std::{Binary, HumanAddr};
-use cw721::Expiration;
+use cosmwasm_std::{HumanAddr};
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -13,7 +13,7 @@ pub struct InitMsg {
     /// The minter is the only one who can create new NFTs.
     /// This is designed for a base NFT that is controlled by an external program
     /// or contract. You will likely replace this with custom logic in custom NFTs
-    pub minter: HumanAddr,
+    pub minter: String,
 }
 
 /// This is like Cw721HandleMsg but we add a Mint command for an owner

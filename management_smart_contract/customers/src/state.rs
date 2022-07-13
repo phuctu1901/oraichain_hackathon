@@ -8,7 +8,7 @@ use cw_storage_plus::{Index, IndexList, IndexedMap, Item, Map, MultiIndex};
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct TokenInfo {
     /// The owner of the newly minter NFT
-    pub owner: CanonicalAddr,
+    pub owner: String,
     /// approvals are stored here, as we clear them all upon transfer and cannot accumulate much
     pub approvals: Vec<Approval>,
 
@@ -41,7 +41,7 @@ pub struct Approval {
 }
 
 pub const CONTRACT_INFO: Item<ContractInfoResponse> = Item::new(b"nft_info");
-pub const MINTER: Item<CanonicalAddr> = Item::new(b"minter");
+pub const MINTER: Item<String> = Item::new(b"minter");
 pub const TOKEN_COUNT: Item<u64> = Item::new(b"num_tokens");
 
 // pub const TOKENS: Map<&str, TokenInfo> = Map::new(b"tokens");
@@ -79,12 +79,12 @@ impl<'a, S: Storage> IndexList<S, TransactionInfo> for TransactionIndexes<'a, S>
     }
 }
 
-pub fn tokens<'a, S: Storage>() -> IndexedMap<'a, &'a str, TokenInfo, S, TokenIndexes<'a, S>> {
-    let indexes = TokenIndexes {
-        owner: MultiIndex::new(|d| d.owner.to_vec(), b"tokens", b"tokens__owner"),
-    };
-    IndexedMap::new(b"tokens", indexes)
-}
+// pub fn tokens<'a, S: Storage>() -> IndexedMap<'a, &'a str, TokenInfo, S, TokenIndexes<'a, S>> {
+//     let indexes = TokenIndexes {
+//         owner: MultiIndex::new(|d| d.owner.to_vec(), b"tokens", b"tokens__owner"),
+//     };
+//     IndexedMap::new(b"tokens", indexes)
+// }
 
 
 pub fn transactions<'a, S: Storage>() -> IndexedMap<'a, &'a str, TransactionInfo, S, TransactionIndexes<'a, S>> {
