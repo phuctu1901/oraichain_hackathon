@@ -1,7 +1,7 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use cosmwasm_std::{CanonicalAddr, StdResult, Storage};
+use cosmwasm_std::{CanonicalAddr, StdResult, Storage, HumanAddr};
 use cw_storage_plus::{Index, IndexList, IndexedMap, Item, MultiIndex};
 
 use crate::msg::ContractInfoResponse;
@@ -58,3 +58,23 @@ pub fn transactions<'a, S: Storage>() -> IndexedMap<'a, &'a str, TransactionInfo
     IndexedMap::new(b"transactions", indexes)
 }
 
+#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug, Default)]
+pub struct AdminList {
+    pub admins: Vec<CanonicalAddr>,
+    pub mutable: bool,
+}
+
+impl AdminList {
+    /// returns true if the address is a registered admin
+    pub fn is_admin(&self, addr: impl AsRef<str>) -> bool {
+        let addr = addr.as_ref();
+        self.admins.iter().any(|a| a.to_string() == addr)
+    }
+
+    /// returns true if the address is a registered admin and the config is mutable
+    pub fn can_modify(&self, addr: &str) -> bool {
+        self.mutable && self.is_admin(addr)
+    }
+}
+
+pub const ADMIN_LIST: Item<AdminList> = Item::new(b"admin_list");

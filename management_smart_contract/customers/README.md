@@ -20,9 +20,13 @@ parameters
 }
 ```
 Owner: `orai17jfg0q25wzqqr46cpuwvhksakgxhgmf0xsqjw5`
+
 Address `orai1et3j4s8xhe408sk0g9ryqlpsuev5csx337uwcy`
 
 ## Query
 - Query transaction with input_data
 - Query transactions of user_id
 
+- Add whitelist for write_data.
+- Whitelist controller.
+- Make feature can integrated with AI Oracle.

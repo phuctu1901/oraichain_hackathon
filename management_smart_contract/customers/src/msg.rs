@@ -8,7 +8,10 @@ pub struct InitMsg {
     pub name: String,
     pub description: String,
     pub version: String,
-    pub owner: HumanAddr
+    pub owner: HumanAddr,
+    pub admins: Vec<HumanAddr>,
+
+    pub mutable: bool,
 }
 
 /// This is like Cw721HandleMsg but we add a Mint command for an owner
@@ -18,6 +21,12 @@ pub struct InitMsg {
 #[serde(rename_all = "snake_case")]
 pub enum HandleMsg {
     AddCustomerRequest(CustomerRequestMsg),
+    
+    Freeze {},
+    /// UpdateAdmins will change the admin set of the contract, must be called by an existing admin,
+    /// and only works if the contract is mutable
+    UpdateAdmins { admins: Vec<HumanAddr> },
+
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -39,7 +48,9 @@ pub enum QueryMsg {
     AllTransactions {
         user_id: String,
     },
-   }
+    AdminList {},
+    CanExecute { sender: String },
+}
 
 /// Shows who can mint these tokens
 #[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
@@ -57,4 +68,10 @@ pub struct ContractInfoResponse {
         pub name: String,
         pub description: String,
         pub version: String,
+}
+
+#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
+pub struct AdminListResponse {
+    pub admins: Vec<HumanAddr>,
+    pub mutable: bool,
 }

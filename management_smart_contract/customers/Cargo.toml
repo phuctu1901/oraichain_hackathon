@@ -3,7 +3,7 @@ name = "customer"
 version = "0.1.0"
 authors = ["1877_Team"]
 edition = "2018"
-description = "Basic implementation cw721 NFTs"
+description = "Basic implementation Oraiconet Customer/Expert Management"
 license = "Apache-2.0"
 repository = "https://github.com/CosmWasm/cosmwasm-plus"
 homepage = "https://cosmwasm.com"
@@ -28,7 +28,7 @@ library = []
 cw-storage-plus = { version = "0.3.2", features = ["iterator"] }
 cw0 = { version = "0.3.2" }
 cw2 = { version = "0.3.2" }
-cw721 = { version = "0.3.2" }
+# cw721 = { version = "0.3.2" }
 
 cosmwasm-std = { version = "0.11.1" }
 schemars = "0.7"
